@@ -48,4 +48,11 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test "email addresses should be unique" do
+    duplicata_user=@user.dup
+
+    @user.save
+    assert_not duplicata_user.valid?
+  end
+
 end
