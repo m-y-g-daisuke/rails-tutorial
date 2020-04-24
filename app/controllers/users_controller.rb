@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user=Use.new(user_params)
+    @user=User.new(user_params)
     if @user.save
       #sucsess
     else
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     end
   end
 
-end
+
 
 private
 
