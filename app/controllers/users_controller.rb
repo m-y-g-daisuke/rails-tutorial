@@ -9,12 +9,21 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user=Use.new(params[:user])
+    @user=Use.new(user_params)
     if @user.save
       #sucsess
     else
       render 'new'
     end
+  end
+
+end
+
+private
+
+  def user_params
+    params.require(:user).permit(:name, :email, :password,
+                                  :password_confirmation)
   end
 
 end
