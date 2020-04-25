@@ -15,6 +15,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         assert_select 'div.alert'
       end
       assert_select 'div.field_with_errors',count:8
+      assert_select 'form#new_user[action="/signup"]' 
   end 
 
 end
