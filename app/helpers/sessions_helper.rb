@@ -13,4 +13,9 @@ module SessionsHelper
       # ↑current_userメソッドが呼ばれた時に、左辺のUserを見つけるか、既に入っているならばインスタンス変数を呼び出す
     end
   end
+
+  # ユーザーがログインしていればtrue、その他ならfalseを返す
+  def logged_in?
+    !current_user.nil?
+  end
 end
