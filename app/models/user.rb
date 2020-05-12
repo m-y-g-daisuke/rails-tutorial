@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  before_save{ email.downcase!}
+  attr_accessor :remember_token
+  before_save{ email.downcase!}#before_save{ self.email = email.downcase}でも可
   validates :name, presence: true, length:{maximum: 50}
   #別の書き方validates (:name,presence:true)
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i  #大文字はrubyでは定数を表す
@@ -16,8 +17,15 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
+  #ランダムなトークンを返す
   def User.new_token
     SecureRandom.urlsafe_base64#SecureRandomモジュールにあるメソッドを使用
+  end
+
+  #永続セッションのためにユーザーをデータベースに記憶する
+  def remember
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token))
   end
 
 end
