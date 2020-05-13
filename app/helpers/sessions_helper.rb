@@ -5,6 +5,12 @@ module SessionsHelper
     session[:user_id] = user.id
   end
 
+  def remember(user)
+    user.remember #インスタンスメソッドを使って、userのからむremember_digestを保存、作成
+    cookies.permanent.signed[:user_id]=user.id#永続クッキーとして暗号化したuser_idを作成
+    cookies.permanent[:remember_token]=user.remember_token#永続クッキーとして、remember_tokenにrememberメソッドないで定義したremember_tokenを代入（新しい記憶トークン）
+  end
+
   #現在ログイン中のユーザーを返す(いる場合)
   def current_user
     if session[:user_id] # =trueならば
