@@ -13,10 +13,16 @@ module SessionsHelper
 
   #現在ログイン中のユーザーを返す(いる場合)
   def current_user
-    if session[:user_id] # =trueならば
-      @current_user ||= User.find_by(id:session[:user_id])
+    if (user_id=session[:user_id]) # =trueならば
+      @current_user ||= User.find_by(id:user_id)
       #@current_user = @current_user || User.find_by(id:session[:user.id])
       # ↑current_userメソッドが呼ばれた時に、左辺のUserを見つけるか、既に入っているならばインスタンス変数を呼び出す
+    elsif (user_id = cookies.signed[:user_id]) #一時セッションが切れている時で、永続セッションが存在すれば
+      user = User.find_by(id:user_id)
+      if user && user.authenticated?(cookies[:remember_token])#永続クッキーのトークンが今のuserのremember_digestと等しいか確認
+        log_in user
+        @current_user = user
+      end
     end
   end
 
